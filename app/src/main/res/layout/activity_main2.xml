@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="5">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/mode_of_game"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:text="VS MODE"
+            android:gravity="center"
+            android:textColor="#6a0dad"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/playtime"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="50dp"
+            tools:ignore="SpUsage"
+
+            android:gravity="center_vertical"
+            android:textColor="#6a0dad"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:text="TIME LEFT: "
+
+            android:drawableLeft="@drawable/ic_baseline_timer_24"
+            >
+        </TextView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/tv_ply1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="PLAYER 1 : 0"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="40dp"
+            android:layout_marginLeft="40dp"
+            tools:ignore="HardcodedText,RtlHardcoded,SpUsage"
+
+            android:gravity="center_horizontal"
+            android:textColor="#6a0dad"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            >
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_ply2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="PLAYER 2 : 0"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="40dp"
+            android:layout_marginRight="40dp"
+            tools:ignore="HardcodedText,RtlHardcoded,SpUsage"
+
+            android:gravity="center_horizontal"
+            android:textColor="#6a0dad"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            >
+        </TextView>
+
+
+    </LinearLayout>
+
+    <GridView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3.5"
+        android:id="@+id/gridView"
+        android:numColumns="3"
+        android:stretchMode="columnWidth">
+    </GridView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_StartGame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:background="@drawable/round_btn"
+            android:textColor="#FFF"
+            android:text="Start Game"
+            android:enabled="false"/>
+
+        <Button
+            android:id="@+id/btn_ChangeMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:background="@drawable/round_btn"
+            android:textColor="#FFF"
+            android:text="game mode" />
+
+    </LinearLayout>
+
+</LinearLayout>
