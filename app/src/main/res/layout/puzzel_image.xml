@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/container_puzzle_iv"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="1dp"
+
+    android:background="@color/white"
+    >
+
+    <ImageView
+        android:id="@+id/puzzle_imageView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:foreground="@drawable/dorder"
+        android:clickable="true"
+        android:src="@drawable/dummy"
+        android:background="@color/white"
+        android:layout_margin="2dp"
+        app:layout_constraintDimensionRatio="1"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

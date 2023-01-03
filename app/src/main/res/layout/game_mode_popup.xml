@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="350dp"
+    android:layout_height="475dp"
+    android:padding="5dp"
+    android:layout_gravity="center"
+    android:background="@drawable/border_shadow">
+
+    <TextView
+        android:id="@+id/popup_close_textView"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:text="X"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_gravity="end"
+        android:background="@drawable/circle_for_cross"/>
+
+    <LinearLayout
+        android:id="@+id/select_game_mode_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="GAME MODE"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="30dp"
+            android:textColor="@color/game_purple"
+            android:layout_marginBottom="15dp"
+            />
+
+        <Button
+            android:id="@+id/single_player_btn"
+            android:text="SINGLE MODE"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/round_btn"
+            android:textSize="20dp"
+            android:layout_marginTop="15dp"
+            />
+
+        <Button
+            android:id="@+id/multi_player_btn"
+            android:text="VS MODE"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/round_btn"
+            android:textSize="20dp"
+            android:layout_marginTop="15dp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/enter_player_name_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp">
+
+        <EditText
+            android:id="@+id/player_1_name_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="20"
+            android:hint="Enter player 1 name"
+            android:textColorHighlight="@color/game_purple"
+            android:layout_marginTop="15dp"
+            android:enabled="false"/>
+
+        <EditText
+            android:id="@+id/player_2_name_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="20"
+            android:hint="Enter player 2 name"
+            android:textColorHighlight="@color/game_purple"
+            android:layout_marginTop="15dp"
+            android:enabled="false"/>
+
+        <Button
+            android:id="@+id/name_confirm_btn"
+            android:text="Confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/round_btn"
+            android:textSize="15dp"
+            android:layout_marginTop="15dp"
+            android:enabled="false"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>
