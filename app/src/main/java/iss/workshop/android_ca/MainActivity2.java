@@ -27,12 +27,18 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class MainActivity2 extends AppCompatActivity implements AdapterView.OnItemClickListener, View.OnClickListener {
 
     // playing Grid
     GridView gridView;
+
+    HashMap<String, Integer> leaderBoard2;
 
     // first image that is clicked
     ImageView firstImageSelected = null;
@@ -72,6 +78,8 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
 
         tv_p1 = (TextView) findViewById(R.id.tv_ply1);
         tv_p2 = (TextView) findViewById(R.id.tv_ply2);
+
+        leaderBoard2 = LeaderBoard.loadLeaderBoard();
 
         //starts from player 1
         tv_p1.setTextColor(Color.GREEN);
@@ -181,7 +189,7 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
                 checkImagesAndScore();
             }
         };
-        img_view.postDelayed(checker, 1000);
+        img_view.postDelayed(checker, 1);
 
     }
 
@@ -285,6 +293,14 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+
+        //For Leader Board
+        game.setPlayer1_score(p1_score);
+        game.setPlayer2_score(p2_score);
+
+        IsAchieveLeaderBoard();
+
+        String abc = "abc";
     }
 
     private void showPlayModePopup(){
@@ -361,6 +377,46 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
 
         playerModePopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         playerModePopup.show();
+    }
+
+    protected boolean IsAchieveLeaderBoard(){
+        Boolean p1Win = true;
+
+        if(game.getPlayer2_name() != null){
+            p1Win = game.getPlayer1_score()> game.getPlayer2_score();
+        }
+
+        if(leaderBoard2.size() < 10){
+            if(p1Win){
+                leaderBoard2.put(game.getPlayer1_name(),game.getPlayer1_score());
+            }else{
+                leaderBoard2.put(game.getPlayer2_name(),game.getPlayer2_score());
+            }
+            LeaderBoard.saveLeaderBoard(leaderBoard2);
+            leaderBoard2 = LeaderBoard.loadLeaderBoard();
+            return true;
+        }
+
+        if(leaderBoard2.size()==10){
+            String cPName = new ArrayList<>(leaderBoard2.keySet()).get(9);
+            int cPScore = leaderBoard2.get(cPName);
+            if(p1Win && game.getPlayer1_score()>cPScore){
+                leaderBoard2.remove(cPName);
+                leaderBoard2.put(game.getPlayer1_name(), game.getPlayer1_score());
+                LeaderBoard.saveLeaderBoard(leaderBoard2);
+                leaderBoard2 = LeaderBoard.loadLeaderBoard();
+                return true;
+            }else if(game.getPlayer2_score()>cPScore){
+                leaderBoard2.remove(cPName);
+                leaderBoard2.put(game.getPlayer2_name(), game.getPlayer2_score());
+                LeaderBoard.saveLeaderBoard(leaderBoard2);
+                leaderBoard2 = LeaderBoard.loadLeaderBoard();
+                return true;
+            }
+
+        }
+
+        return false;
     }
 
 

@@ -1,5 +1,7 @@
 package iss.workshop.android_ca;
 
+import java.io.Serializable;
+
 public class Game {
 
     private String player1_name;

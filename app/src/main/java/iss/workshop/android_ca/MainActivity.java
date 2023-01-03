@@ -42,25 +42,34 @@ import org.jsoup.select.Elements;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity implements RecyclerViewInterface {
     EditText mURL; // where URL is placed
     RecyclerView recyclerView;
     TextView textView;
     Button mFetchBtn;
+    Button mLeaderBoardBtn;
     File dir;
     String url; // input URL (stocksnap.io)
     File imageURLsFileDir; // not sure what this is for. seems like not used
     List <String> imgURLS = new ArrayList<>(); // list of 20 image Urls from website (eg stocksnap.io)
 
     List<Uri> uri; // list of 20 Uri referring to 20 jpg images in external storage
+    HashMap<String, Integer> leaderBoard;
 
     // for placement of first 20 blank
     Uri dummy = Uri.parse("https://cdn-icons-png.flaticon.com/512/59/59836.png");
@@ -138,6 +147,24 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
                     WebScrape ws = new WebScrape();
                     ws.execute();
                 }
+            }
+        });
+
+        leaderBoard = LeaderBoard.loadLeaderBoard();
+
+        mLeaderBoardBtn = findViewById(R.id.leaderBoard_button);
+
+        if(leaderBoard == null){
+            mLeaderBoardBtn.setEnabled(false);
+        }
+        if(leaderBoard!=null){
+            mLeaderBoardBtn.setEnabled(true);
+        }
+
+        mLeaderBoardBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startleaderBoard(leaderBoard);
             }
         });
 
@@ -358,6 +385,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
         else{
             Toast.makeText(this,"Select 6 only",Toast.LENGTH_SHORT).show();
         }
+        recyclerView.setAdapter(adapter);
 
         // Enable or disable "confirm" button
         Button btnSelect = findViewById(R.id.cfm6_button);
@@ -425,5 +453,18 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
         // Launch Activity 2
             Intent intent = new Intent(this, MainActivity2.class);
             startActivity(intent);
+    }
+
+
+
+    protected void startleaderBoard(HashMap<String,Integer> scoreList){
+
+        ArrayList<String> playerNames = new ArrayList<>(scoreList.keySet());
+        ArrayList<Integer> playerScores = new ArrayList<>(scoreList.values());
+
+        Intent intent = new Intent(this, LeaderBoard.class);
+        intent.putStringArrayListExtra("names", playerNames);
+        intent.putIntegerArrayListExtra("scores", playerScores);
+        startActivity(intent);
     }
 }
