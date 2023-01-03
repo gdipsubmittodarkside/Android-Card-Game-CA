@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.AudioAttributes;
+import android.media.SoundPool;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -62,6 +64,8 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
 
     // For displaying player mode pop-up
     Dialog playerModePopup;
+    private SoundPool soundPool;
+    private int sound;
 
     // Game object
     Game game;
@@ -80,6 +84,20 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
 
         // this fills a list of 12 images, with the 2 selected images from internal storage
         fillArray();
+
+        // build sound pool
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build();
+
+        soundPool = new SoundPool.Builder()
+                .setMaxStreams(1)
+                .setAudioAttributes(audioAttributes)
+                .build();
+
+        sound = soundPool.load(this,R.raw.flip,1);
+
 
         // Sets the playing grid
         gridView = (GridView) findViewById(R.id.gridView);
@@ -152,6 +170,7 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
         ImageView img_view = (ImageView) view;
+        PlaySound();
 
         //first clicked
         if (firstImage_Pos < 0) {
@@ -392,6 +411,10 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
 
         playerModePopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         playerModePopup.show();
+    }
+
+    private void PlaySound(){
+        soundPool.play(sound,1,1,0,0,1);
     }
 
 
