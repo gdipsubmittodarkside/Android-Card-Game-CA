@@ -1,6 +1,5 @@
 package iss.workshop.android_ca;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -30,21 +29,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Timer;
-import java.util.stream.Collectors;
 
 import kotlin.LateinitKt;
 
@@ -115,7 +106,7 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
         tv_p1 = (TextView) findViewById(R.id.tv_ply1);
         tv_p2 = (TextView) findViewById(R.id.tv_ply2);
 
-        leaderBoard2 = loadLeaderBoard();
+        leaderBoard2 = LeaderBoard.loadLeaderBoard();
 
         //starts from player 1
         tv_p1.setTextColor(Color.GREEN);
@@ -558,8 +549,8 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
             }else{
                 leaderBoard2.put(game.getPlayer2_name(),game.getPlayer2_score());
             }
-            saveLeaderBoard(leaderBoard2);
-            leaderBoard2 = loadLeaderBoard();
+            LeaderBoard.saveLeaderBoard(leaderBoard2);
+            leaderBoard2 = LeaderBoard.loadLeaderBoard();
             return true;
         }
 
@@ -569,61 +560,20 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
             if(p1Win && game.getPlayer1_score()>cPScore){
                 leaderBoard2.remove(cPName);
                 leaderBoard2.put(game.getPlayer1_name(), game.getPlayer1_score());
-                saveLeaderBoard(leaderBoard2);
-                leaderBoard2 = loadLeaderBoard();
+                LeaderBoard.saveLeaderBoard(leaderBoard2);
+                leaderBoard2 = LeaderBoard.loadLeaderBoard();
                 return true;
             }else if(game.getPlayer2_score()>cPScore){
                 leaderBoard2.remove(cPName);
                 leaderBoard2.put(game.getPlayer2_name(), game.getPlayer2_score());
-                saveLeaderBoard(leaderBoard2);
-                leaderBoard2 = loadLeaderBoard();
+                LeaderBoard.saveLeaderBoard(leaderBoard2);
+                leaderBoard2 = LeaderBoard.loadLeaderBoard();
                 return true;
             }
 
         }
 
         return false;
-    }
-
-    public void saveLeaderBoard(@NonNull HashMap<String,Integer> scoreList){
-        File lbs = getLeaderBoardFile();
-        HashMap<String, Integer> sortedHM = scoreList.entrySet().stream()
-                .sorted((x, y)-> y.getValue().compareTo(x.getValue())).collect(Collectors
-                        .toMap(Map.Entry::getKey,Map.Entry::getValue,(e1, e2) -> e1, LinkedHashMap::new));
-        try
-        {
-            FileOutputStream fileOutputStream = new FileOutputStream(lbs);
-            ObjectOutputStream objectOutputStream= new ObjectOutputStream(fileOutputStream);
-
-            objectOutputStream.writeObject(sortedHM);
-            objectOutputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public HashMap<String,Integer> loadLeaderBoard(){
-        HashMap<String,Integer> scoreList = new HashMap<>();
-        File lbs = getLeaderBoardFile();
-        try
-        {
-            FileInputStream fileInputStream  = new FileInputStream(lbs);
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-
-            scoreList = (HashMap) objectInputStream.readObject();
-            objectInputStream.close();
-            return scoreList;
-        }
-        catch(ClassNotFoundException | IOException | ClassCastException e) {
-            e.printStackTrace();
-        }
-        return scoreList;
-    }
-
-    public File getLeaderBoardFile(){
-        String filePath = "LBfolder";
-        String fileName = "LBS.txt";
-        return new File(getFilesDir(),  filePath + "/" + fileName);
     }
 
 }
