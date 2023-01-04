@@ -27,7 +27,6 @@ public class ListAdapter extends ArrayAdapter<Object> {
     public ListAdapter(Context context, ArrayList<String> names, ArrayList<Integer> scores) {
         super(context, R.layout.row);
         this.context = context;
-        rankNum =1;
         this.names = names;
         this.scores = scores;
         if(names != null){
@@ -43,8 +42,7 @@ public class ListAdapter extends ArrayAdapter<Object> {
         }
         if(names != null){
             TextView rank = view.findViewById(R.id.rankNumber);
-            rank.setText(String.valueOf(rankNum));
-            rankNum++;
+            rank.setText(String.valueOf(pos+1));
 
             TextView name = view.findViewById(R.id.rankPlayerName);
             name.setText(names.get(pos));

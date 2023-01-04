@@ -1,5 +1,6 @@
 package iss.workshop.android_ca;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +9,7 @@ import android.animation.AnimatorSet;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.AudioAttributes;
@@ -34,8 +36,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.Timer;
+import java.util.stream.Collectors;
 
 import kotlin.LateinitKt;
 
@@ -106,7 +113,7 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
         tv_p1 = (TextView) findViewById(R.id.tv_ply1);
         tv_p2 = (TextView) findViewById(R.id.tv_ply2);
 
-        leaderBoard2 = LeaderBoard.loadLeaderBoard();
+        leaderBoard2 = loadLeaderBoard();
 
         //starts from player 1
         tv_p1.setTextColor(Color.GREEN);
@@ -549,8 +556,8 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
             }else{
                 leaderBoard2.put(game.getPlayer2_name(),game.getPlayer2_score());
             }
-            LeaderBoard.saveLeaderBoard(leaderBoard2);
-            leaderBoard2 = LeaderBoard.loadLeaderBoard();
+            saveLeaderBoard(leaderBoard2);
+            leaderBoard2 = loadLeaderBoard();
             return true;
         }
 
@@ -560,20 +567,56 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
             if(p1Win && game.getPlayer1_score()>cPScore){
                 leaderBoard2.remove(cPName);
                 leaderBoard2.put(game.getPlayer1_name(), game.getPlayer1_score());
-                LeaderBoard.saveLeaderBoard(leaderBoard2);
-                leaderBoard2 = LeaderBoard.loadLeaderBoard();
+                saveLeaderBoard(leaderBoard2);
+                leaderBoard2 = loadLeaderBoard();
                 return true;
             }else if(game.getPlayer2_score()>cPScore){
                 leaderBoard2.remove(cPName);
                 leaderBoard2.put(game.getPlayer2_name(), game.getPlayer2_score());
-                LeaderBoard.saveLeaderBoard(leaderBoard2);
-                leaderBoard2 = LeaderBoard.loadLeaderBoard();
+                saveLeaderBoard(leaderBoard2);
+                leaderBoard2 = loadLeaderBoard();
                 return true;
             }
 
         }
 
         return false;
+    }
+
+
+    protected void saveLeaderBoard(@NonNull HashMap<String,Integer> scoreList){
+        SharedPreferences splb = getSharedPreferences("leaderBoard", MODE_PRIVATE);
+        SharedPreferences.Editor editor = splb.edit();
+
+        HashMap<String, Integer> sortedHM = scoreList.entrySet().stream()
+                .sorted((x, y)-> y.getValue().compareTo(x.getValue())).collect(Collectors
+                        .toMap(Map.Entry::getKey,Map.Entry::getValue,(e1, e2) -> e1, LinkedHashMap::new));
+
+        Set<String> lbNames = sortedHM.keySet();
+        Set<String> lbScores = sortedHM.values().stream()
+                .map(String::valueOf)
+                .collect(Collectors.toSet());
+
+        editor.putStringSet("lbNames", lbNames);
+        editor.putStringSet("lbScores", lbScores);
+        editor.commit();
+
+
+    }
+
+    protected HashMap<String,Integer> loadLeaderBoard(){
+        SharedPreferences splb = getSharedPreferences("leaderBoard", MODE_PRIVATE);
+        List<String> lbNames = new ArrayList<>(splb.getStringSet("lbNames", new HashSet<>()));
+        List<String> lbScores = new ArrayList<>(splb.getStringSet("lbScores", new HashSet<>()));
+
+        HashMap<String,Integer> scoreList = new HashMap<>();
+        if(lbNames.size()>0) {
+            for (int i = 0; i < lbNames.size(); i++) {
+                scoreList.put(lbNames.get(i), Integer.valueOf(lbScores.get(i)));
+            }
+        }
+
+        return scoreList;
     }
 
 }
